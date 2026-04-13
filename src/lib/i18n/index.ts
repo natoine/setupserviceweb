@@ -1,5 +1,4 @@
-import { browser } from '$app/environment';
-import { init, register, getLocaleFromNavigator } from 'svelte-i18n';
+import { init, register } from 'svelte-i18n';
 
 export const SUPPORTED_LOCALES = ['en', 'fr'] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
@@ -19,8 +18,6 @@ export function initI18n(initialLocale?: string) {
 export function resolveLocale(preferred?: string): Locale {
 	const candidates: (string | null | undefined)[] = [
 		preferred,
-		browser ? localStorage.getItem('locale') : null,
-		browser ? getLocaleFromNavigator() : null,
 		DEFAULT_LOCALE
 	];
 
