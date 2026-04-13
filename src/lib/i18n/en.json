@@ -1,0 +1,86 @@
+{
+	"meta": {
+		"title": "APP_NAME",
+		"description": "APP_NAME — web service."
+	},
+	"nav": {
+		"home": "Home",
+		"changelog": "Changelog"
+	},
+	"footer": {
+		"tagline": "APP_NAME",
+		"links": {
+			"changelog": "Changelog"
+		}
+	},
+	"auth": {
+		"login": "Log In",
+		"logout": "Log Out",
+		"register": "Sign Up",
+		"loginTitle": "Log In",
+		"registerTitle": "Create Account",
+		"email": "Email",
+		"username": "Username",
+		"usernamePlaceholder": "yourname",
+		"password": "Password",
+		"newPassword": "New Password",
+		"confirmPassword": "Confirm Password",
+		"forgotPassword": "Forgot password?",
+		"loggingIn": "Logging in…",
+		"registering": "Creating account…",
+		"sending": "Sending…",
+		"saving": "Saving…",
+		"alreadyHaveAccount": "Already have an account?",
+		"noAccount": "No account yet?",
+		"checkEmail": "Check Your Email",
+		"checkEmailMessage": "A verification link has been sent to {email}.",
+		"checkSpam": "If you don't see it, check your spam folder.",
+		"verifyEmail": "Verify Email",
+		"verifying": "Verifying…",
+		"emailVerified": "Your email is verified! You can now log in.",
+		"forgotPasswordHint": "Enter your email address and we'll send you a reset link.",
+		"forgotPasswordSent": "If that address is registered, a reset link is on its way.",
+		"sendResetLink": "Send Reset Link",
+		"resetPassword": "Reset Password",
+		"passwordResetSuccess": "Your password has been reset.",
+		"backToLogin": "← Back to login",
+		"backToHome": "← Back to home",
+		"errors": {
+			"MISSING_FIELDS": "Please fill in all fields.",
+			"INVALID_EMAIL": "Invalid email address.",
+			"PASSWORD_TOO_SHORT": "Password must be at least 8 characters.",
+			"PASSWORD_MISMATCH": "Passwords do not match.",
+			"USERNAME_INVALID_LENGTH": "Username must be between 2 and 24 characters.",
+			"USERNAME_INVALID_CHARS": "Username may only contain letters, numbers, spaces, hyphens, and underscores.",
+			"USERNAME_TAKEN": "That username is already taken.",
+			"EMAIL_ALREADY_USED": "An account with this email already exists.",
+			"INVALID_CREDENTIALS": "Incorrect email or password.",
+			"EMAIL_NOT_VERIFIED": "Please verify your email before logging in.",
+			"MISSING_TOKEN": "Verification token is missing.",
+			"INVALID_TOKEN": "This verification link is invalid.",
+			"ALREADY_VERIFIED": "This email is already verified.",
+			"TOKEN_EXPIRED": "This link has expired. Please register again.",
+			"INVALID_OR_EXPIRED_TOKEN": "This link is invalid or has expired.",
+			"INVALID_PASSWORD": "Incorrect password.",
+			"INVALID_CURRENT_PASSWORD": "Current password is incorrect.",
+			"UNKNOWN": "Something went wrong. Please try again."
+		}
+	},
+	"account": {
+		"title": "My Account",
+		"welcome": "Welcome back,",
+		"changeUsername": "Change Username",
+		"changePassword": "Change Password",
+		"deleteAccount": "Delete Account",
+		"deleteWarning": "This action is irreversible. Your account and all associated data will be permanently deleted.",
+		"confirmWithPassword": "Confirm with your password",
+		"currentPassword": "Current Password",
+		"save": "Save",
+		"saving": "Saving…",
+		"cancel": "Cancel",
+		"usernameUpdated": "Username updated successfully.",
+		"passwordUpdated": "Password updated successfully.",
+		"deleteConfirm": "Delete my account",
+		"deleting": "Deleting…"
+	}
+}

@@ -1,0 +1,86 @@
+{
+	"meta": {
+		"title": "APP_NAME",
+		"description": "APP_NAME — service web."
+	},
+	"nav": {
+		"home": "Accueil",
+		"changelog": "Journal des modifications"
+	},
+	"footer": {
+		"tagline": "APP_NAME",
+		"links": {
+			"changelog": "Journal des modifications"
+		}
+	},
+	"auth": {
+		"login": "Se connecter",
+		"logout": "Se déconnecter",
+		"register": "S'inscrire",
+		"loginTitle": "Connexion",
+		"registerTitle": "Créer un compte",
+		"email": "Email",
+		"username": "Nom d'utilisateur",
+		"usernamePlaceholder": "votrenom",
+		"password": "Mot de passe",
+		"newPassword": "Nouveau mot de passe",
+		"confirmPassword": "Confirmer le mot de passe",
+		"forgotPassword": "Mot de passe oublié ?",
+		"loggingIn": "Connexion…",
+		"registering": "Création du compte…",
+		"sending": "Envoi…",
+		"saving": "Enregistrement…",
+		"alreadyHaveAccount": "Vous avez déjà un compte ?",
+		"noAccount": "Pas encore de compte ?",
+		"checkEmail": "Vérifiez votre email",
+		"checkEmailMessage": "Un lien de vérification a été envoyé à {email}.",
+		"checkSpam": "Si vous ne le voyez pas, vérifiez vos spams.",
+		"verifyEmail": "Vérification de l'email",
+		"verifying": "Vérification en cours…",
+		"emailVerified": "Votre email est vérifié ! Vous pouvez maintenant vous connecter.",
+		"forgotPasswordHint": "Entrez votre adresse email et nous vous enverrons un lien de réinitialisation.",
+		"forgotPasswordSent": "Si cette adresse est enregistrée, un lien de réinitialisation est en route.",
+		"sendResetLink": "Envoyer le lien",
+		"resetPassword": "Réinitialiser le mot de passe",
+		"passwordResetSuccess": "Votre mot de passe a été réinitialisé.",
+		"backToLogin": "← Retour à la connexion",
+		"backToHome": "← Retour à l'accueil",
+		"errors": {
+			"MISSING_FIELDS": "Veuillez remplir tous les champs.",
+			"INVALID_EMAIL": "Adresse email invalide.",
+			"PASSWORD_TOO_SHORT": "Le mot de passe doit contenir au moins 8 caractères.",
+			"PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas.",
+			"USERNAME_INVALID_LENGTH": "Le nom d'utilisateur doit contenir entre 2 et 24 caractères.",
+			"USERNAME_INVALID_CHARS": "Le nom d'utilisateur ne peut contenir que des lettres, chiffres, espaces, tirets et underscores.",
+			"USERNAME_TAKEN": "Ce nom d'utilisateur est déjà pris.",
+			"EMAIL_ALREADY_USED": "Un compte avec cet email existe déjà.",
+			"INVALID_CREDENTIALS": "Email ou mot de passe incorrect.",
+			"EMAIL_NOT_VERIFIED": "Veuillez vérifier votre email avant de vous connecter.",
+			"MISSING_TOKEN": "Le jeton de vérification est manquant.",
+			"INVALID_TOKEN": "Ce lien de vérification est invalide.",
+			"ALREADY_VERIFIED": "Cet email est déjà vérifié.",
+			"TOKEN_EXPIRED": "Ce lien a expiré. Veuillez vous inscrire à nouveau.",
+			"INVALID_OR_EXPIRED_TOKEN": "Ce lien est invalide ou a expiré.",
+			"INVALID_PASSWORD": "Mot de passe incorrect.",
+			"INVALID_CURRENT_PASSWORD": "Le mot de passe actuel est incorrect.",
+			"UNKNOWN": "Une erreur est survenue. Veuillez réessayer."
+		}
+	},
+	"account": {
+		"title": "Mon compte",
+		"welcome": "Bienvenue,",
+		"changeUsername": "Changer le nom d'utilisateur",
+		"changePassword": "Changer le mot de passe",
+		"deleteAccount": "Supprimer le compte",
+		"deleteWarning": "Cette action est irréversible. Votre compte et toutes les données associées seront définitivement supprimés.",
+		"confirmWithPassword": "Confirmez avec votre mot de passe",
+		"currentPassword": "Mot de passe actuel",
+		"save": "Enregistrer",
+		"saving": "Enregistrement…",
+		"cancel": "Annuler",
+		"usernameUpdated": "Nom d'utilisateur mis à jour.",
+		"passwordUpdated": "Mot de passe mis à jour.",
+		"deleteConfirm": "Supprimer mon compte",
+		"deleting": "Suppression…"
+	}
+}
