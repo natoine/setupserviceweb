@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import db, { type UserRow } from '$lib/server/db';
 import { signToken } from '$lib/server/jwt';
 import { logActivity, anonymizeIp } from '$lib/server/activity';
+import { sendLoginNotificationEmail } from '$lib/server/email';
 import type { RequestHandler } from './$types';
 
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
@@ -38,6 +39,15 @@ export const POST: RequestHandler = async ({ request, cookies, getClientAddress 
 	`).run(user.id);
 
 	logActivity('login', { email: user.email, username: user.username, ip });
+
+	// Reset inactivity warning if the user logs in again (#0035)
+	if (user.inactivity_warning_at) {
+		db.prepare('UPDATE users SET inactivity_warning_at = NULL WHERE id = ?').run(user.id);
+	}
+
+	// Fire-and-forget: never block login on email failure (#0054)
+	const loginDate = new Date().toUTCString();
+	sendLoginNotificationEmail(user.email, user.username, ip, loginDate).catch(() => {});
 
 	const token = signToken({ userId: user.id, email: user.email });
 

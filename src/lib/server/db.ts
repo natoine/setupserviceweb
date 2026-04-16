@@ -42,6 +42,15 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_activity_type       ON activity_log(type);
 `);
 
+// Incremental column migrations
+const userCols = db.pragma('table_info(users)') as { name: string }[];
+if (!userCols.some((c) => c.name === 'inactivity_warning_at')) {
+	db.exec('ALTER TABLE users ADD COLUMN inactivity_warning_at INTEGER DEFAULT NULL');
+}
+if (!userCols.some((c) => c.name === 'is_admin')) {
+	db.exec('ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0');
+}
+
 export default db;
 
 // ── User row type ─────────────────────────────────────────────
@@ -56,6 +65,8 @@ export interface UserRow {
 	reset_token: string | null;
 	reset_token_expires: number | null;
 	last_login_at: number | null;
+	inactivity_warning_at: number | null;
+	is_admin: 0 | 1;
 	created_at: number;
 	updated_at: number;
 }

@@ -10,6 +10,8 @@ export type ActivityType =
 	| 'password_changed'
 	| 'password_reset_requested'
 	| 'password_reset_completed'
+	| 'account_inactivity_warning_sent'
+	| 'account_purged_inactive'
 	| 'email_verification_sent'
 	| 'email_password_reset_sent'
 	| 'email_admin_access_sent';
