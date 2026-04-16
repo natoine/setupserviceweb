@@ -1,6 +1,8 @@
 import { json } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import db, { type UserRow } from '$lib/server/db';
+import { logActivity } from '$lib/server/activity';
+import { validatePassword } from '$lib/server/validation';
 import type { RequestHandler } from './$types';
 
 const BCRYPT_ROUNDS = 12;
@@ -12,8 +14,9 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ code: 'MISSING_FIELDS' }, { status: 400 });
 	}
 
-	if (body.password.length < 8) {
-		return json({ code: 'PASSWORD_TOO_SHORT' }, { status: 400 });
+	const pwdResult = validatePassword(body.password as string);
+	if (!pwdResult.valid) {
+		return json({ code: pwdResult.code }, { status: 400 });
 	}
 
 	const user = db
@@ -31,6 +34,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL, updated_at = unixepoch()
 		WHERE id = ?
 	`).run(passwordHash, user.id);
+
+	logActivity('password_reset_completed', { email: user.email });
 
 	return json({ ok: true });
 };

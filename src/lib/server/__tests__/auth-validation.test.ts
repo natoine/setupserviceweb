@@ -1,23 +1,5 @@
 import { describe, it, expect } from 'vitest';
-
-// Extracted validation logic (pure functions, no DB/env deps)
-function validateEmail(email: string): boolean {
-	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function validatePassword(password: string): boolean {
-	return password.length >= 8;
-}
-
-function validateUsername(username: string): { valid: boolean; code?: string } {
-	if (username.length < 2 || username.length > 24) {
-		return { valid: false, code: 'USERNAME_INVALID_LENGTH' };
-	}
-	if (!/^[a-zA-Z0-9_\- ]+$/.test(username)) {
-		return { valid: false, code: 'USERNAME_INVALID_CHARS' };
-	}
-	return { valid: true };
-}
+import { validateEmail, validatePassword, validateUsername } from '../validation';
 
 describe('validateEmail', () => {
 	it('accepts valid emails', () => {
@@ -35,23 +17,66 @@ describe('validateEmail', () => {
 });
 
 describe('validatePassword', () => {
-	it('accepts passwords with 8+ characters', () => {
-		expect(validatePassword('12345678')).toBe(true);
-		expect(validatePassword('a_very_long_password_ok')).toBe(true);
+	const VALID = 'Str0ng!Pass#12';
+
+	it('accepts a password meeting all ANSSI rules', () => {
+		expect(validatePassword(VALID)).toEqual({ valid: true });
 	});
 
-	it('rejects passwords shorter than 8 characters', () => {
-		expect(validatePassword('')).toBe(false);
-		expect(validatePassword('1234567')).toBe(false);
+	it('rejects passwords shorter than 12 characters', () => {
+		expect(validatePassword('Short1!')).toMatchObject({
+			valid: false,
+			code: 'PASSWORD_TOO_SHORT'
+		});
+		expect(validatePassword('Short1!XY')).toMatchObject({
+			valid: false,
+			code: 'PASSWORD_TOO_SHORT'
+		});
+	});
+
+	it('rejects passwords without an uppercase letter', () => {
+		expect(validatePassword('str0ng!pass#12')).toMatchObject({
+			valid: false,
+			code: 'PASSWORD_MISSING_UPPERCASE'
+		});
+	});
+
+	it('rejects passwords without a lowercase letter', () => {
+		expect(validatePassword('STR0NG!PASS#12')).toMatchObject({
+			valid: false,
+			code: 'PASSWORD_MISSING_LOWERCASE'
+		});
+	});
+
+	it('rejects passwords without a digit', () => {
+		expect(validatePassword('Strong!Pass#AB')).toMatchObject({
+			valid: false,
+			code: 'PASSWORD_MISSING_DIGIT'
+		});
+	});
+
+	it('rejects passwords without a special character', () => {
+		expect(validatePassword('Str0ngPass1234')).toMatchObject({
+			valid: false,
+			code: 'PASSWORD_MISSING_SPECIAL'
+		});
+	});
+
+	it('accepts passwords exactly 12 characters with full complexity', () => {
+		expect(validatePassword('Aa1!Aa1!Aa1!')).toEqual({ valid: true });
+	});
+
+	it('rejects empty password', () => {
+		expect(validatePassword('')).toMatchObject({ valid: false, code: 'PASSWORD_TOO_SHORT' });
 	});
 });
 
 describe('validateUsername', () => {
 	it('accepts valid usernames', () => {
-		expect(validateUsername('Thorin').valid).toBe(true);
-		expect(validateUsername('Hero_1')).toMatchObject({ valid: true });
-		expect(validateUsername('Le Brave')).toMatchObject({ valid: true });
-		expect(validateUsername('ab')).toMatchObject({ valid: true }); // min 2
+		expect(validateUsername('Thorin')).toEqual({ valid: true });
+		expect(validateUsername('Hero_1')).toEqual({ valid: true });
+		expect(validateUsername('Le Brave')).toEqual({ valid: true });
+		expect(validateUsername('ab')).toEqual({ valid: true }); // min 2
 	});
 
 	it('rejects usernames that are too short', () => {
@@ -77,6 +102,6 @@ describe('validateUsername', () => {
 	});
 
 	it('accepts 24-character username (boundary)', () => {
-		expect(validateUsername('a'.repeat(24))).toMatchObject({ valid: true });
+		expect(validateUsername('a'.repeat(24))).toEqual({ valid: true });
 	});
 });
