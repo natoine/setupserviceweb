@@ -33,10 +33,12 @@ function allRows(): ActivityRow[] {
 }
 
 let logActivity: (type: string, meta?: Record<string, unknown>) => void;
+let anonymizeIp: (ip: string) => string;
 
 beforeAll(async () => {
 	const mod = await import('../activity');
 	logActivity = mod.logActivity;
+	anonymizeIp = mod.anonymizeIp;
 });
 
 beforeEach(() => {
@@ -83,6 +85,40 @@ describe('logActivity', () => {
 		expect(rows[0].created_at).toBeLessThanOrEqual(after);
 	});
 
+	it('logs login_failed with email and ip meta', () => {
+		logActivity('login_failed', { email: 'hacker@evil.com', ip: '192.168.1.0' });
+		const rows = allRows();
+		expect(rows).toHaveLength(1);
+		expect(rows[0].type).toBe('login_failed');
+		const meta = JSON.parse(rows[0].meta);
+		expect(meta.email).toBe('hacker@evil.com');
+		expect(meta.ip).toBe('192.168.1.0');
+	});
+
+	it('logs password_changed with userId', () => {
+		logActivity('password_changed', { userId: 42, email: 'user@test.com' });
+		const rows = allRows();
+		expect(rows[0].type).toBe('password_changed');
+		expect(JSON.parse(rows[0].meta).userId).toBe(42);
+	});
+
+	it('logs admin_login and admin_login_failed', () => {
+		logActivity('admin_login', { ip: '10.0.0.0' });
+		logActivity('admin_login_failed', { reason: 'invalid_or_expired_token', ip: '10.0.0.0' });
+		const rows = allRows();
+		expect(rows[0].type).toBe('admin_login');
+		expect(rows[1].type).toBe('admin_login_failed');
+		expect(JSON.parse(rows[1].meta).reason).toBe('invalid_or_expired_token');
+	});
+
+	it('logs password_reset_requested and password_reset_completed', () => {
+		logActivity('password_reset_requested', { email: 'user@test.com' });
+		logActivity('password_reset_completed', { email: 'user@test.com' });
+		const rows = allRows();
+		expect(rows[0].type).toBe('password_reset_requested');
+		expect(rows[1].type).toBe('password_reset_completed');
+	});
+
 	it('never throws when the database call fails', () => {
 		const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 		memDb.exec('DROP TABLE activity_log');
@@ -115,6 +151,24 @@ function fillMonthDays(
 		return { date: key, count: map[key] ?? 0 };
 	});
 }
+
+// ── anonymizeIp ───────────────────────────────────────────────────────────────
+describe('anonymizeIp', () => {
+	it('masks the last octet of an IPv4 address', () => {
+		expect(anonymizeIp('192.168.1.42')).toBe('192.168.1.0');
+		expect(anonymizeIp('10.0.0.255')).toBe('10.0.0.0');
+	});
+
+	it('keeps the first three groups of an IPv6 address', () => {
+		expect(anonymizeIp('2001:db8:85a3:0:0:8a2e:370:7334')).toBe(
+			'2001:db8:85a3:0:0:0:0:0'
+		);
+	});
+
+	it('returns "unknown" for unrecognised formats', () => {
+		expect(anonymizeIp('not-an-ip')).toBe('unknown');
+	});
+});
 
 describe('fillMonthDays', () => {
 	it('returns 31 entries for January', () => { expect(fillMonthDays([], 2026, 1)).toHaveLength(31); });

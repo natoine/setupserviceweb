@@ -4,6 +4,7 @@ import { randomBytes } from 'node:crypto';
 import db from '$lib/server/db';
 import { sendVerificationEmail } from '$lib/server/email';
 import { logActivity } from '$lib/server/activity';
+import { validateEmail, validatePassword, validateUsername } from '$lib/server/validation';
 import { NODE_ENV } from '$env/static/private';
 import type { RequestHandler } from './$types';
 
@@ -21,18 +22,16 @@ export const POST: RequestHandler = async ({ request }) => {
 	const username: string = body.username.trim();
 	const password: string = body.password;
 
-	// Basic validations
-	if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+	if (!validateEmail(email)) {
 		return json({ code: 'INVALID_EMAIL' }, { status: 400 });
 	}
-	if (password.length < 8) {
-		return json({ code: 'PASSWORD_TOO_SHORT' }, { status: 400 });
+	const pwdResult = validatePassword(password);
+	if (!pwdResult.valid) {
+		return json({ code: pwdResult.code }, { status: 400 });
 	}
-	if (username.length < 2 || username.length > 24) {
-		return json({ code: 'USERNAME_INVALID_LENGTH' }, { status: 400 });
-	}
-	if (!/^[a-zA-Z0-9_\- ]+$/.test(username)) {
-		return json({ code: 'USERNAME_INVALID_CHARS' }, { status: 400 });
+	const usernameResult = validateUsername(username);
+	if (!usernameResult.valid) {
+		return json({ code: usernameResult.code }, { status: 400 });
 	}
 
 	// Check for existing verified account

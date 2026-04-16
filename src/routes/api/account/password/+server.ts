@@ -1,6 +1,8 @@
 import { json } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import db, { type UserRow } from '$lib/server/db';
+import { logActivity } from '$lib/server/activity';
+import { validatePassword } from '$lib/server/validation';
 import type { RequestHandler } from './$types';
 
 const BCRYPT_ROUNDS = 12;
@@ -13,8 +15,9 @@ export const PATCH: RequestHandler = async ({ request, locals }) => {
 	if (!body || !body.currentPassword || !body.newPassword) {
 		return json({ code: 'MISSING_FIELDS' }, { status: 400 });
 	}
-	if ((body.newPassword as string).length < 8) {
-		return json({ code: 'PASSWORD_TOO_SHORT' }, { status: 400 });
+	const pwdResult = validatePassword(body.newPassword as string);
+	if (!pwdResult.valid) {
+		return json({ code: pwdResult.code }, { status: 400 });
 	}
 
 	const user = db
@@ -28,6 +31,8 @@ export const PATCH: RequestHandler = async ({ request, locals }) => {
 	db.prepare(
 		'UPDATE users SET password_hash = ?, updated_at = unixepoch() WHERE id = ?'
 	).run(newHash, locals.user.id);
+
+	logActivity('password_changed', { userId: locals.user.id, email: locals.user.email });
 
 	return json({ ok: true });
 };

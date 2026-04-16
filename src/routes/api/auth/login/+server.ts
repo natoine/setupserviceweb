@@ -2,12 +2,12 @@ import { json } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import db, { type UserRow } from '$lib/server/db';
 import { signToken } from '$lib/server/jwt';
-import { logActivity } from '$lib/server/activity';
+import { logActivity, anonymizeIp } from '$lib/server/activity';
 import type { RequestHandler } from './$types';
 
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
 
-export const POST: RequestHandler = async ({ request, cookies }) => {
+export const POST: RequestHandler = async ({ request, cookies, getClientAddress }) => {
 	const body = await request.json().catch(() => null);
 
 	if (!body || !body.email || !body.password) {
@@ -16,6 +16,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 	const email: string = body.email.trim().toLowerCase();
 	const password: string = body.password;
+	const ip = anonymizeIp(getClientAddress());
 
 	const user = db
 		.prepare('SELECT * FROM users WHERE email = ?')
@@ -24,6 +25,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	const passwordMatch = user ? await bcrypt.compare(password, user.password_hash) : false;
 
 	if (!user || !passwordMatch) {
+		logActivity('login_failed', { email, ip });
 		return json({ code: 'INVALID_CREDENTIALS' }, { status: 401 });
 	}
 
@@ -35,7 +37,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		UPDATE users SET last_login_at = unixepoch(), updated_at = unixepoch() WHERE id = ?
 	`).run(user.id);
 
-	logActivity('login', { email: user.email, username: user.username });
+	logActivity('login', { email: user.email, username: user.username, ip });
 
 	const token = signToken({ userId: user.id, email: user.email });
 

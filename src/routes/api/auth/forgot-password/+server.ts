@@ -30,6 +30,8 @@ export const POST: RequestHandler = async ({ request }) => {
 			UPDATE users SET reset_token = ?, reset_token_expires = ?, updated_at = unixepoch() WHERE id = ?
 		`).run(resetToken, expires, user.id);
 
+		logActivity('password_reset_requested', { email });
+
 		try {
 			await sendPasswordResetEmail(email, resetToken);
 			logActivity('email_password_reset_sent', { to: email });
