@@ -48,7 +48,11 @@
 		"errors": {
 			"MISSING_FIELDS": "Please fill in all fields.",
 			"INVALID_EMAIL": "Invalid email address.",
-			"PASSWORD_TOO_SHORT": "Password must be at least 8 characters.",
+			"PASSWORD_TOO_SHORT": "Password must be at least 12 characters.",
+			"PASSWORD_MISSING_UPPERCASE": "Password must contain at least one uppercase letter.",
+			"PASSWORD_MISSING_LOWERCASE": "Password must contain at least one lowercase letter.",
+			"PASSWORD_MISSING_DIGIT": "Password must contain at least one digit.",
+			"PASSWORD_MISSING_SPECIAL": "Password must contain at least one special character.",
 			"PASSWORD_MISMATCH": "Passwords do not match.",
 			"USERNAME_INVALID_LENGTH": "Username must be between 2 and 24 characters.",
 			"USERNAME_INVALID_CHARS": "Username may only contain letters, numbers, spaces, hyphens, and underscores.",
