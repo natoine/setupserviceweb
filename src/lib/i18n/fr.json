@@ -10,7 +10,8 @@
 	"footer": {
 		"tagline": "APP_NAME",
 		"links": {
-			"changelog": "Journal des modifications"
+			"changelog": "Journal des modifications",
+			"aarri": "AARRI"
 		}
 	},
 	"auth": {
@@ -68,6 +69,24 @@
 			"INVALID_PASSWORD": "Mot de passe incorrect.",
 			"INVALID_CURRENT_PASSWORD": "Le mot de passe actuel est incorrect.",
 			"UNKNOWN": "Une erreur est survenue. Veuillez réessayer."
+		}
+	},
+	"aarri": {
+		"subtitle": "Métriques publiques du projet — Acquisition, Activation, Rétention, Référencement, Impact.",
+		"col": {
+			"step": "Étape",
+			"metric": "Métrique suivie",
+			"value": "Valeur"
+		},
+		"steps": {
+			"acquisition": "Acquisition",
+			"activation": "Activation",
+			"retention": "Rétention",
+			"referral": "Référencement",
+			"impact": "Impact"
+		},
+		"placeholder": {
+			"metric": "Description de la métrique suivie"
 		}
 	},
 	"account": {
