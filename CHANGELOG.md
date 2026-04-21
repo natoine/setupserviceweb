@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Security
+- `nodemailer` mis à jour `6.10.1 → 8.0.5` — corrige 4 CVE HIGH (SMTP injection, DoS, domain spoofing)
+- `bcrypt` mis à jour `5.1.1 → 6.0.0` — corrige vulnérabilités `tar` via `@mapbox/node-pre-gyp` (path traversal, symlink poisoning)
+- `@types/nodemailer` mis à jour `6.4.x → 8.0.0`, `@types/bcrypt` mis à jour `5.0.x → 6.0.0`
+- Vulnérabilités résiduelles **non corrigeables sans casser le projet** (à surveiller) :
+  - `cookie < 0.7.0` via `@sveltejs/kit@2.x` — LOW — upstream non corrigé par l'équipe SvelteKit (le "fix" npm irait à kit@0.0.30)
+  - `esbuild <= 0.24.2` via `svelte-i18n@4.x` — MODERATE — dev-server uniquement, sans impact en production (le "fix" npm downgraderait svelte-i18n)
+
 ### Added
 - `src/lib/server/maintenance.ts` — purge automatique des comptes inactifs : warning email à J+30, suppression à J+60 (#0035)
 - Route `POST /api/cron/maintenance` protégée par `CRON_SECRET` pour déclencher le cycle de maintenance
