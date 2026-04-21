@@ -7,6 +7,7 @@
 		<p class="tagline">{$t('footer.tagline')}</p>
 		<nav class="footer-nav" aria-label="Footer navigation">
 			<a href="/changelog">{$t('footer.links.changelog')}</a>
+			<a href="/aarri">{$t('footer.links.aarri')}</a>
 		</nav>
 	</div>
 </footer>
