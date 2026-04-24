@@ -17,6 +17,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - `esbuild <= 0.24.2` via `svelte-i18n@4.x` — MODERATE — dev-server uniquement, sans impact en production (le "fix" npm downgraderait svelte-i18n)
 
 ### Added
+- Page publique `/aarri` — tableau AARRI (Acquisition, Activation, Rétention, Référencement, Impact) et Matrice d'impact (Utilisable, Utilisé, Utile, Impactant) avec valeurs placeholder, lien dans le footer
+- Clés i18n `aarri.*` ajoutées en fr et en
+
+### Prompt log
+- `2026-04-24 | En tant que porteur de projet, je veux une page publique /aarri affichant un tableau AARRI et une matrice d'impact avec métriques indicatives et valeurs placeholder, accessible depuis le footer | src/routes/aarri/+page.svelte, src/lib/components/layout/Footer.svelte, src/lib/i18n/fr.json, src/lib/i18n/en.json`
+
+### Added (suite)
 - `src/lib/server/maintenance.ts` — purge automatique des comptes inactifs : warning email à J+30, suppression à J+60 (#0035)
 - Route `POST /api/cron/maintenance` protégée par `CRON_SECRET` pour déclencher le cycle de maintenance
 - `sendLoginNotificationEmail` dans `email.ts` — email de notification envoyé à chaque connexion (#0054)
